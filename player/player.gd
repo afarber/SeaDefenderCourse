@@ -3,6 +3,8 @@ extends Area2D
 const FLIP_DURATION = 0.5
 const OXYGEN_DECREASE_SPEED = 2.5
 const OXYGEN_INCREASE_SPEED = 60
+const OXYGEN_REFUEL_Y_POSITION = 38
+const OXYGEN_REFUEL_MOVE_SPEED = 70
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
 
@@ -34,9 +36,12 @@ func _process(delta):
 	elif state == State.PEOPLE_REFUEL:
 		oxygen_refuel(delta)
 
+
 func _physics_process(delta):
 	if state == State.DEFAULT:
 		movement(delta)
+	else:
+		move_to_shore_line(delta)
 
 func _on_reload_timer_timeout():
 	can_shoot = true
@@ -98,6 +103,10 @@ func oxygen_refuel(delta):
 
 func movement(delta):
 	global_position += velocity * SPEED * delta
+
+func move_to_shore_line(delta):
+	var move_speed = OXYGEN_REFUEL_MOVE_SPEED * delta
+	global_position.y = move_toward(global_position.y, OXYGEN_REFUEL_Y_POSITION, move_speed)
 
 func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL
