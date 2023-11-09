@@ -1,5 +1,6 @@
 extends Node
 
-signal update_people_count
 signal full_crew_oxygen_refuel
 signal less_people_oxygen_refuel
+signal update_people_count(saved_people_count)
+signal camera_follow_player(player_y_position)

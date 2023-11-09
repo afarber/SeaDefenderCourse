@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://b8d18yv6piqsr"]
+[gd_scene load_steps=18 format=3 uid="uid://b8d18yv6piqsr"]
 
 [ext_resource type="PackedScene" uid="uid://tn70mtfme7b7" path="res://player/player.tscn" id="1_1dh4i"]
+[ext_resource type="Script" path="res://scenes/game/camera.gd" id="1_dfds7"]
 [ext_resource type="PackedScene" uid="uid://biqfuncpi5mwx" path="res://enemies/enemy_spawner/enemy_spawner.tscn" id="2_qi05x"]
 [ext_resource type="PackedScene" uid="uid://c767axtuni7nd" path="res://user_interface/people-count/people_count.tscn" id="3_gvg47"]
 [ext_resource type="Script" path="res://scenes/game/oxygen_zone.gd" id="3_tgugv"]
@@ -45,6 +46,10 @@ subdivide_width = 8
 subdivide_depth = 1
 
 [node name="Game" type="Node"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(128, 70)
+script = ExtResource("1_dfds7")
 
 [node name="Player" parent="." instance=ExtResource("1_1dh4i")]
 position = Vector2(117, 65)

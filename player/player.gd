@@ -48,6 +48,7 @@ func _physics_process(delta):
 	else:
 		move_to_shore_line(delta)
 	clamp_position()
+	GameEvent.emit_signal("camera_follow_player", global_position.y)
 
 func _on_reload_timer_timeout():
 	can_shoot = true
@@ -121,7 +122,7 @@ func move_to_shore_line(delta):
 func remove_one_person():
 	if Global.saved_people_count > 0:
 		Global.saved_people_count -= 1
-		GameEvent.emit_signal("update_people_count")
+		GameEvent.emit_signal("update_people_count", Global.saved_people_count)
 
 func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL

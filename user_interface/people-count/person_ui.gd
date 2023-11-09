@@ -8,5 +8,5 @@ const FULL_TEXTURE = preload("res://user_interface/people-count/person_ui.png")
 func _ready():
 	GameEvent.connect("update_people_count", Callable(self, "_update"))
 	
-func _update():
-	texture = FULL_TEXTURE if Global.saved_people_count >= order_number else EMPTY_TEXTURE
+func _update(saved_people_count):
+	texture = FULL_TEXTURE if saved_people_count >= order_number else EMPTY_TEXTURE
