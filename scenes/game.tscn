@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b8d18yv6piqsr"]
+[gd_scene load_steps=17 format=3 uid="uid://b8d18yv6piqsr"]
 
 [ext_resource type="PackedScene" uid="uid://tn70mtfme7b7" path="res://player/player.tscn" id="1_1dh4i"]
 [ext_resource type="PackedScene" uid="uid://biqfuncpi5mwx" path="res://enemies/enemy_spawner/enemy_spawner.tscn" id="2_qi05x"]
@@ -8,6 +8,7 @@
 [ext_resource type="Shader" path="res://scenes/environment/water_shader.gdshader" id="4_d5akm"]
 [ext_resource type="Texture2D" uid="uid://busom17fvjrq4" path="res://user_interface/oxygen-bar/oxygen_bar_progress.png" id="5_mpudm"]
 [ext_resource type="Script" path="res://user_interface/oxygen-bar/oxygen_bar.gd" id="6_58t3o"]
+[ext_resource type="FontFile" uid="uid://88sjx52j2qyh" path="res://user_interface/fonts/font_1.ttf" id="9_1o827"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5y5rh"]
 size = Vector2(262, 20)
@@ -111,9 +112,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -100.0
-offset_top = -23.0
+offset_top = -22.0
 offset_right = 100.0
-offset_bottom = -14.0
+offset_bottom = -13.0
 grow_horizontal = 2
 grow_vertical = 0
 nine_patch_stretch = true
@@ -122,5 +123,26 @@ stretch_margin_right = 4
 texture_under = ExtResource("4_87wku")
 texture_progress = ExtResource("5_mpudm")
 script = ExtResource("6_58t3o")
+
+[node name="Label" type="Label" parent="UserInterface/OxygenBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -12.5
+offset_right = 24.0
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0.12549, 0.0823529, 0.2, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("9_1o827")
+theme_override_font_sizes/font_size = 8
+text = "Oxygen"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [connection signal="area_entered" from="OxygenZone" to="OxygenZone" method="_on_area_entered"]
