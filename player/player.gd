@@ -19,11 +19,11 @@ func _process(delta):
 	process_movement_input()
 	direction_follows_input(velocity.x, delta)
 	process_shooting()
-	Global.oxygen_level -= OXYGEN_DECREASE_SPEED * delta
-	
+	lose_oxygen(delta)
+
 func _physics_process(delta):
-	global_position += velocity * SPEED * delta
-	
+	movement(delta)
+
 func _on_reload_timer_timeout():
 	can_shoot = true
 	
@@ -73,3 +73,9 @@ func process_shooting():
 			
 		can_shoot = false
 		reload_timer.start()
+
+func lose_oxygen(delta):
+	Global.oxygen_level -= OXYGEN_DECREASE_SPEED * delta
+
+func movement(delta):
+	global_position += velocity * SPEED * delta
