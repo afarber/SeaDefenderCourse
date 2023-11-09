@@ -1,6 +1,7 @@
 extends Node2D
 
 const Shark = preload("res://enemies/shark/shark.tscn")
+const Person = preload("res://person/person.tscn")
 
 @onready var left = $Left
 @onready var right = $Right
@@ -21,5 +22,10 @@ func spawn_enemy(selected_spawn_point_number):
 	shark_instance.global_position = spawn_position
 	get_tree().current_scene.add_child(shark_instance)
 	
-	if spawn_position.x > 0:
+	if selected_side_node == right:
 		shark_instance.flip_direction()
+
+func _on_spawn_person_timer_timeout():
+	var person_instance = Person.instantiate()
+	person_instance.global_position = Vector2(10, 20)
+	get_tree().current_scene.add_child(person_instance)
