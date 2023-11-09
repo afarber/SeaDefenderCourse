@@ -29,18 +29,19 @@ var going_left = false
 func _ready():
 	GameEvent.connect("full_crew_oxygen_refuel", Callable(self, "_full_crew_oxygen_refuel"))
 	GameEvent.connect("less_people_oxygen_refuel", Callable(self, "_less_people_oxygen_refuel"))
- 
+	GameEvent.connect("game_over", Callable(self, "_game_over"))
+	
 func _process(delta):
 	if state == State.DEFAULT:
 		process_movement_input()
 		direction_follows_input(velocity.x, delta)
 		process_shooting()
 		lose_oxygen(delta)
+		_death_when_oxygen_reaches_zero()
 	elif state == State.OXYGEN_REFUEL:
 		oxygen_refuel(delta)
 	elif state == State.PEOPLE_REFUEL:
 		pass
-
 
 func _physics_process(delta):
 	if state == State.DEFAULT:
@@ -108,6 +109,14 @@ func oxygen_refuel(delta):
 	if Global.oxygen_level > 99:
 		state = State.DEFAULT
 
+func _death_when_oxygen_reaches_zero():
+	if Global.oxygen_level <= 0:
+		GameEvent.emit_signal("game_over")
+
+func _death_when_refueling_while_full():
+	if Global.oxygen_level > 80:
+		GameEvent.emit_signal("game_over")
+
 func movement(delta):
 	global_position += velocity * SPEED * delta
 
@@ -124,17 +133,24 @@ func remove_one_person():
 		Global.saved_people_count -= 1
 		GameEvent.emit_signal("update_people_count", Global.saved_people_count)
 
+# called by the signal full_crew_oxygen_refuel when touching the top area
 func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL
 	decrease_people_timer.start()
+	_death_when_refueling_while_full()
 
+# called by the signal less_people_oxygen_refuel when touching the top area
 func _less_people_oxygen_refuel():
 	state = State.OXYGEN_REFUEL
 	# punish the player for refueling oxygen with a not full crew by removing 1 person
 	remove_one_person()
+	_death_when_refueling_while_full()
 
 func _on_decrease_people_timer_timeout():
 	remove_one_person()
 	if Global.saved_people_count <= 0:
 		decrease_people_timer.stop()
 		state = State.OXYGEN_REFUEL
+
+func _game_over():
+	queue_free()
