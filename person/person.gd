@@ -11,7 +11,7 @@ func _physics_process(delta):
 
 func _on_area_entered(area):
 	if area.is_in_group("PlayerGroup"):
-		# increase crew counter
+		Global.saved_people_count += 1
 		queue_free()
 	elif area.is_in_group("PlayerBulletGroup"):
 		queue_free()
