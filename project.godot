@@ -14,7 +14,7 @@ config/name="Sea Defender Course"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [display]
 
