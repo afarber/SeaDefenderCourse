@@ -3,12 +3,12 @@ extends AnimatedSprite2D
 var can_shoot = true
 var velocity = Vector2(0, 0)
 
-const TURNING_START = 1
-var turning_timer = TURNING_START
+const TURNING_TARGET = 2.0
+var turning_timer = TURNING_TARGET
 # if player looks left, the angle is 0
 # if player looks right, the angle is PI
-var current_angle = 0
-var target_angle = 0
+var current_angle = 0.0
+var target_angle = 0.0
 
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
@@ -22,26 +22,30 @@ func _process(delta):
 	velocity.y = Input.get_axis("move_up", "move_down")
 	velocity = velocity.normalized()
 	
-	if turning_timer > 0:
-		turning_timer -= delta
-		print("Updated turning_timer=%f" % turning_timer)
-		# arrive at the target, stop the timer
-		if turning_timer <= 0:
-			turning_timer == 0
+	if turning_timer < TURNING_TARGET:
+		turning_timer += delta
+
+		# arrived at the target, stop the timer
+		if turning_timer >= TURNING_TARGET:
+			turning_timer = TURNING_TARGET
 			current_angle = target_angle
 			scale.x = 1
 		else:
-			current_angle = target_angle - turning_timer / TURNING_START
-			scale.x = cos(current_angle)
-	
+			# flip when passed half of the timer
+			if turning_timer >= TURNING_TARGET / 2:
+				flip_h = (target_angle == PI)
+			current_angle = lerp(current_angle, target_angle, turning_timer / TURNING_TARGET)
+			scale.x = abs(cos(current_angle))
+			print("UPDATED current_angle=%.2f -> target_angle=%.2f scale.x=%.2f flip_h=%s" % [current_angle, target_angle, scale.x, flip_h])
+			
 	if velocity.x > 0 and current_angle == PI:
-		target_angle = 0
-		turning_timer = TURNING_START
-		print("Started turning_timer=%f" % turning_timer)
-	elif velocity.x < 0 and current_angle == 0:
+		target_angle = 0.0
+		turning_timer = 0.0
+		print("STARTED current_angle=%.2f -> target_angle=%.2f scale.x=%.2f flip_h=%s" % [current_angle, target_angle, scale.x, flip_h])
+	elif velocity.x < 0 and current_angle == 0.0:
 		target_angle = PI
-		turning_timer = TURNING_START
-		print("Started turning_timer=%f" % turning_timer)
+		turning_timer = 0.0
+		print("STARTED current_angle=%.2f -> target_angle=%.2f scale.x=%.2f flip_h=%s" % [current_angle, target_angle, scale.x, flip_h])
 	
 	if Input.is_action_pressed("shoot") and can_shoot:
 		var bullet_instance = Bullet.instantiate()
