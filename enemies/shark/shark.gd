@@ -5,6 +5,7 @@ const MOVEMENT_FREQUENCY = 0.15
 const MOVEMENT_AMPLITUDE = 0.5
 
 var velocity = Vector2(1, 0)
+var points_value = 25
 
 @onready var sprite = $AnimatedSprite2D
 
@@ -14,6 +15,8 @@ func _physics_process(delta):
 
 func _on_area_entered(area):
 	if area.is_in_group("PlayerBulletGroup"):
+		Global.current_points += points_value
+		GameEvent.emit_signal("update_points")
 		# the parent of the area is player_bullet
 		area.queue_free()
 		queue_free()
