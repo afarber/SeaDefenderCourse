@@ -56,7 +56,7 @@ func _flip_the_player(velocity_x, delta):
 			# if player looks right, the angle is 0
 			var start_angle = 0.0 if going_left else PI
 			var target_angle = PI if going_left else 0.0
-			var angle = lerp(start_angle, target_angle, flip_seconds / FLIP_DURATION)
+			var angle = lerp_angle(start_angle, target_angle, flip_seconds / FLIP_DURATION)
 			scale.x = abs(cos(angle))
 	else:
 		# animation not active and moving right, but facing left
