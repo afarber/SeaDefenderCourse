@@ -5,9 +5,7 @@ var velocity = Vector2(0, 0)
  
 const FLIP_DURATION = 0.5
 var flip_seconds = FLIP_DURATION
-# if player looks left, the target angle is 0
-# if player looks right, the target angle is PI
-var target_angle = 0.0
+var going_left = false
  
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
@@ -53,16 +51,19 @@ func _flip_the_player(velocity_x, delta):
 		else:
 			# flip to the moving direction when passed half of the timer
 			if flip_seconds >= FLIP_DURATION / 2:
-				flip_h = (target_angle == PI)
-			var start_angle = PI if target_angle == 0.0 else 0.0
+				flip_h = going_left
+			# if player looks left, the angle is PI
+			# if player looks right, the angle is 0
+			var start_angle = 0.0 if going_left else PI
+			var target_angle = PI if going_left else 0.0
 			var angle = lerp(start_angle, target_angle, flip_seconds / FLIP_DURATION)
 			scale.x = abs(cos(angle))
 	else:
 		# animation not active and moving right, but facing left
 		if velocity_x > 0 and flip_h:
-			target_angle = 0.0
+			going_left = false
 			flip_seconds = 0.0
 		# animation not active and moving left, but facing right
 		elif velocity_x < 0 and !flip_h:
-			target_angle = PI
+			going_left = true
 			flip_seconds = 0.0
