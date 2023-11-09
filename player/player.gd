@@ -3,7 +3,7 @@ extends AnimatedSprite2D
 var can_shoot = true
 var velocity = Vector2(0, 0)
 
-const TURNING_START = 1000
+const TURNING_START = 1
 var is_turning_left = false
 var is_turning_right = false
 var turning_timer = TURNING_START
@@ -15,12 +15,14 @@ const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 @onready var reload_timer = $ReloadTimer
 
 func _process(delta):
+
 	velocity.x = Input.get_axis("move_left", "move_right")	
 	velocity.y = Input.get_axis("move_up", "move_down")
 	velocity = velocity.normalized()
 
 	if is_turning_left:
 		turning_timer -= delta
+		print("Updated turning_timer=%f" % turning_timer)
 		scale.x = 0.5 #turning_timer / TURNING_START
 		if turning_timer <= 0:
 			is_turning_left = false
@@ -29,6 +31,7 @@ func _process(delta):
 			scale.x = 1
 	elif is_turning_right:
 		turning_timer -= delta
+		print("Updated turning_timer=%f" % turning_timer)
 		scale.x = 0.5 #turning_timer / TURNING_START
 		if turning_timer <= 0:
 			is_turning_left = false
@@ -40,10 +43,12 @@ func _process(delta):
 		is_turning_left = false
 		is_turning_right = true
 		turning_timer = TURNING_START
+		print("Started turning_timer=%f" % turning_timer)
 	elif velocity.x < 0 and !is_turning_left:
 		is_turning_left = true
 		is_turning_right = false
 		turning_timer = TURNING_START
+		print("Started turning_timer=%f" % turning_timer)
 		
 	# TODO
 	#scale.x = .5
