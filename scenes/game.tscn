@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b8d18yv6piqsr"]
+[gd_scene load_steps=19 format=3 uid="uid://b8d18yv6piqsr"]
 
 [ext_resource type="PackedScene" uid="uid://tn70mtfme7b7" path="res://player/player.tscn" id="1_1dh4i"]
 [ext_resource type="Script" path="res://scenes/game/camera.gd" id="1_dfds7"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://busom17fvjrq4" path="res://user_interface/oxygen-bar/oxygen_bar_progress.png" id="5_mpudm"]
 [ext_resource type="Script" path="res://user_interface/oxygen-bar/oxygen_bar.gd" id="6_58t3o"]
 [ext_resource type="FontFile" uid="uid://88sjx52j2qyh" path="res://user_interface/fonts/font_1.ttf" id="9_1o827"]
+[ext_resource type="FontFile" uid="uid://y8ngc4anv2fy" path="res://user_interface/fonts/font_2.ttf" id="11_v5bm4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5y5rh"]
 size = Vector2(262, 20)
@@ -149,5 +150,16 @@ theme_override_font_sizes/font_size = 8
 text = "Oxygen"
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="PointsDisplay" type="Label" parent="UserInterface"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("11_v5bm4")
+theme_override_font_sizes/font_size = 10
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="area_entered" from="OxygenZone" to="OxygenZone" method="_on_area_entered"]
