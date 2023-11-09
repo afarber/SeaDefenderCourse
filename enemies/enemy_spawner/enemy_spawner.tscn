@@ -34,7 +34,7 @@ position = Vector2(290, 141)
 position = Vector2(290, 173)
 
 [node name="SpawnEnemyTimer" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 5.25
 autostart = true
 
 [connection signal="timeout" from="SpawnEnemyTimer" to="." method="_on_spawn_enemy_timer_timeout"]
