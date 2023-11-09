@@ -14,7 +14,7 @@ const BULLET_OFFSET = 7
 
 const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 
-enum State { DEFAULT, PEOPLE_REFUEL, LESS_PEOPLE_REFUEL }
+enum State { DEFAULT, PEOPLE_REFUEL, OXYGEN_REFUEL }
 var state = State.DEFAULT
 
 var can_shoot = true
@@ -24,6 +24,7 @@ var going_left = false
  
 @onready var sprite = $AnimatedSprite2D
 @onready var reload_timer = $ReloadTimer
+@onready var decrease_people_timer = $DecreasePeopleTimer
 
 func _ready():
 	GameEvent.connect("full_crew_oxygen_refuel", Callable(self, "_full_crew_oxygen_refuel"))
@@ -35,10 +36,10 @@ func _process(delta):
 		direction_follows_input(velocity.x, delta)
 		process_shooting()
 		lose_oxygen(delta)
-	elif state == State.LESS_PEOPLE_REFUEL:
+	elif state == State.OXYGEN_REFUEL:
 		oxygen_refuel(delta)
 	elif state == State.PEOPLE_REFUEL:
-		oxygen_refuel(delta)
+		pass
 
 
 func _physics_process(delta):
@@ -117,8 +118,22 @@ func move_to_shore_line(delta):
 	var move_speed = OXYGEN_REFUEL_MOVE_SPEED * delta
 	global_position.y = move_toward(global_position.y, OXYGEN_REFUEL_Y_POSITION, move_speed)
 
+func remove_one_person():
+	if Global.saved_people_count > 0:
+		Global.saved_people_count -= 1
+		GameEvent.emit_signal("update_people_count")
+
 func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL
+	decrease_people_timer.start()
 
 func _less_people_oxygen_refuel():
-	state = State.LESS_PEOPLE_REFUEL
+	state = State.OXYGEN_REFUEL
+	# punish the player for refueling oxygen with a not full crew by removing 1 person
+	remove_one_person()
+
+func _on_decrease_people_timer_timeout():
+	remove_one_person()
+	if Global.saved_people_count <= 0:
+		decrease_people_timer.stop()
+		state = State.OXYGEN_REFUEL
