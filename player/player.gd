@@ -6,7 +6,8 @@ var velocity = Vector2(0, 0)
 const FLIP_DURATION = 0.5
 var flip_seconds = FLIP_DURATION
 var going_left = false
- 
+
+const OXYGEN_DECREASE_SPEED = 2.5
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
 const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
@@ -15,6 +16,8 @@ const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 @onready var reload_timer = $ReloadTimer
  
 func _process(delta):
+	
+	Global.oxygen_level -= OXYGEN_DECREASE_SPEED * delta
  
 	velocity.x = Input.get_axis("move_left", "move_right")	
 	velocity.y = Input.get_axis("move_up", "move_down")
