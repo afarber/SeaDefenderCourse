@@ -16,7 +16,7 @@ func _process(delta):
 		flip_h = true
 		
 	#scale.x = .5
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot"):
 		var bullet_instance = Bullet.instantiate()
 		bullet_instance.global_position = global_position
 		get_tree().current_scene.add_child(bullet_instance)
