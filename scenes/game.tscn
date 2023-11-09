@@ -1,27 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://b8d18yv6piqsr"]
 
 [ext_resource type="PackedScene" uid="uid://tn70mtfme7b7" path="res://player/player.tscn" id="1_1dh4i"]
-[ext_resource type="PackedScene" uid="uid://dlixa5wutkxju" path="res://enemies/enemy_spawner/enemy_spawner.tscn" id="2_qi05x"]
+[ext_resource type="PackedScene" uid="uid://biqfuncpi5mwx" path="res://enemies/enemy_spawner/enemy_spawner.tscn" id="2_qi05x"]
 
 [node name="Game" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource("1_1dh4i")]
 position = Vector2(117, 65)
 
-[node name="EnemySpawner3" parent="." instance=ExtResource("2_qi05x")]
-position = Vector2(10, 110)
-
-[node name="EnemySpawner4" parent="." instance=ExtResource("2_qi05x")]
-position = Vector2(250, 125)
-facing_left = true
-
 [node name="EnemySpawner" parent="." instance=ExtResource("2_qi05x")]
-position = Vector2(10, 40)
-
-[node name="EnemySpawner2" parent="." instance=ExtResource("2_qi05x")]
-position = Vector2(250, 20)
-facing_left = true
-
-[node name="EnemySpawner5" parent="." instance=ExtResource("2_qi05x")]
-position = Vector2(250, 70)
-facing_left = true
