@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://buqlbk6pp2fnp"]
+[gd_scene load_steps=7 format=3 uid="uid://buqlbk6pp2fnp"]
 
 [ext_resource type="Texture2D" uid="uid://drbtjtg3ajijg" path="res://player/player_bullet/player_bullet.png" id="1_kisj5"]
 [ext_resource type="Script" path="res://player/player_bullet/player_bullet.gd" id="2_10bbh"]
@@ -25,6 +25,9 @@ animations = [{
 "speed": 20.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2e88u"]
+size = Vector2(13, 6)
+
 [node name="PlayerBullet" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_q1ehv")
 autoplay = "default"
@@ -34,5 +37,11 @@ offset = Vector2(-0.5, 0)
 script = ExtResource("2_10bbh")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="." groups=["PlayerBulletGroup"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_2e88u")
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
