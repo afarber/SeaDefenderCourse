@@ -16,26 +16,10 @@ const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 @onready var reload_timer = $ReloadTimer
  
 func _process(delta):
-	
+	process_movement_input()
+	direction_follows_input(velocity.x, delta)
+	process_shooting()
 	Global.oxygen_level -= OXYGEN_DECREASE_SPEED * delta
- 
-	velocity.x = Input.get_axis("move_left", "move_right")	
-	velocity.y = Input.get_axis("move_up", "move_down")
-	velocity = velocity.normalized()
-	
-	_flip_the_player(velocity.x, delta)
-	
-	if Input.is_action_pressed("shoot") and can_shoot:
-		var bullet_instance = Bullet.instantiate()
-		get_tree().current_scene.add_child(bullet_instance)
-		if sprite.flip_h:
-			bullet_instance.flip_direction()
-			bullet_instance.global_position = global_position - Vector2(BULLET_OFFSET, 0)
-		else:
-			bullet_instance.global_position = global_position + Vector2(BULLET_OFFSET, 0)
-			
-		can_shoot = false
-		reload_timer.start()
 	
 func _physics_process(delta):
 	global_position += velocity * SPEED * delta
@@ -43,7 +27,12 @@ func _physics_process(delta):
 func _on_reload_timer_timeout():
 	can_shoot = true
 	
-func _flip_the_player(velocity_x, delta):
+func process_movement_input():
+	velocity.x = Input.get_axis("move_left", "move_right")	
+	velocity.y = Input.get_axis("move_up", "move_down")
+	velocity = velocity.normalized()
+
+func direction_follows_input(velocity_x, delta):
 	# if the flip animation is active
 	if flip_seconds < FLIP_DURATION:
 		flip_seconds += delta
@@ -71,3 +60,16 @@ func _flip_the_player(velocity_x, delta):
 		elif velocity_x < 0 and !sprite.flip_h:
 			going_left = true
 			flip_seconds = 0.0
+
+func process_shooting():
+	if Input.is_action_pressed("shoot") and can_shoot:
+		var bullet_instance = Bullet.instantiate()
+		get_tree().current_scene.add_child(bullet_instance)
+		if sprite.flip_h:
+			bullet_instance.flip_direction()
+			bullet_instance.global_position = global_position - Vector2(BULLET_OFFSET, 0)
+		else:
+			bullet_instance.global_position = global_position + Vector2(BULLET_OFFSET, 0)
+			
+		can_shoot = false
+		reload_timer.start()
