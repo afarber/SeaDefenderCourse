@@ -1,8 +1,10 @@
-extends AnimatedSprite2D
+extends Area2D
 
 var velocity = Vector2(1, 0)
 
 const SPEED = 300
+
+@onready var sprite = $AnimatedSprite2D
 
 func _ready():
 	rotation_degrees = randf_range(-7, 7)
@@ -17,4 +19,4 @@ func _on_visible_on_screen_notifier_2d_screen_exited():
 	
 func flip_direction():
 	velocity = -velocity
-	flip_h = !flip_h
+	sprite.flip_h = !sprite.flip_h
