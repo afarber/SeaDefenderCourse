@@ -11,6 +11,10 @@ var points_value = 30
 func _physics_process(delta):
 	global_position += velocity * SPEED * delta
 
+func _process(delta):
+	if global_position.x > Global.SCREEN_BOUND_MAX_X or global_position.x < Global.SCREEN_BOUND_MIN_X:
+		queue_free()
+
 func _on_area_entered(area):
 	if area.is_in_group("PlayerGroup"):
 		Global.saved_people_count += 1
@@ -24,6 +28,3 @@ func _on_area_entered(area):
 func flip_direction():
 	velocity = -velocity
 	sprite.flip_h = !sprite.flip_h
-
-func _on_visible_on_screen_notifier_2d_screen_exited():
-	queue_free()
