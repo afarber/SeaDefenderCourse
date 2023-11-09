@@ -5,6 +5,10 @@ const OXYGEN_DECREASE_SPEED = 2.5
 const OXYGEN_INCREASE_SPEED = 60
 const OXYGEN_REFUEL_Y_POSITION = 38
 const OXYGEN_REFUEL_MOVE_SPEED = 70
+const MAX_X_POSITION = 248
+const MIN_X_POSTION = 13
+const MAX_Y_POSITION = 205
+const MIN_Y_POSTION = OXYGEN_REFUEL_Y_POSITION
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
 
@@ -42,6 +46,7 @@ func _physics_process(delta):
 		movement(delta)
 	else:
 		move_to_shore_line(delta)
+	clamp_position()
 
 func _on_reload_timer_timeout():
 	can_shoot = true
@@ -103,6 +108,10 @@ func oxygen_refuel(delta):
 
 func movement(delta):
 	global_position += velocity * SPEED * delta
+
+func clamp_position():
+	global_position.x = clamp(global_position.x, MIN_X_POSTION, MAX_X_POSITION)
+	global_position.y = clamp(global_position.y, MIN_Y_POSTION, MAX_Y_POSITION)
 
 func move_to_shore_line(delta):
 	var move_speed = OXYGEN_REFUEL_MOVE_SPEED * delta
