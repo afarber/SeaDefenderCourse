@@ -19,6 +19,7 @@ func _process(delta):
 	elif velocity.x < 0:
 		flip_h = true
 		
+		
 	# TODO
 	#scale.x = .5
 	
@@ -26,6 +27,10 @@ func _process(delta):
 		var bullet_instance = Bullet.instantiate()
 		bullet_instance.global_position = global_position
 		get_tree().current_scene.add_child(bullet_instance)
+		if flip_h:
+			bullet_instance.flip_h = true
+			bullet_instance.velocity.x = -1
+			
 		can_shoot = false
 		reload_timer.start()
 	
