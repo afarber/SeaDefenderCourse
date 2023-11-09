@@ -3,10 +3,10 @@ extends AnimatedSprite2D
 var can_shoot = true
 var velocity = Vector2(0, 0)
 
-const TURNING_TARGET = 2.0
-var turning_timer = TURNING_TARGET
-# if player looks left, the angle is 0
-# if player looks right, the angle is PI
+const FLIP_DURATION = 0.5
+var flip_seconds = FLIP_DURATION
+# if player looks left, the target angle is 0
+# if player looks right, the target angle is PI
 var target_angle = 0.0
 
 const SPEED = Vector2(125, 90)
@@ -21,33 +21,7 @@ func _process(delta):
 	velocity.y = Input.get_axis("move_up", "move_down")
 	velocity = velocity.normalized()
 	
-	# if the timer is active
-	if turning_timer < TURNING_TARGET:
-		turning_timer += delta
-
-		# completed turning, stop the timer
-		if turning_timer >= TURNING_TARGET:
-			turning_timer = TURNING_TARGET
-			scale.x = 1
-		else:
-			# flip to the moving direction when passed half of the timer
-			if turning_timer >= TURNING_TARGET / 2:
-				flip_h = (target_angle == PI)
-			var start_angle = PI if target_angle == 0.0 else 0.0
-			var angle = lerp(start_angle, target_angle, turning_timer / TURNING_TARGET)
-			scale.x = abs(cos(angle))
-			print("UPDATED angle=%.2f -> target_angle=%.2f scale.x=%.2f flip_h=%s" % [angle, target_angle, scale.x, flip_h])
-	else:
-		# timer not active and moving right, but facing left
-		if velocity.x > 0 and flip_h:
-			target_angle = 0.0
-			turning_timer = 0.0
-			print("STARTED target_angle=%.2f scale.x=%.2f flip_h=%s" % [target_angle, scale.x, flip_h])
-		# timer not active and moving left, but facing right
-		elif velocity.x < 0 and !flip_h:
-			target_angle = PI
-			turning_timer = 0.0
-			print("STARTED target_angle=%.2f scale.x=%.2f flip_h=%s" % [target_angle, scale.x, flip_h])
+	_flip_the_player(velocity.x, delta)
 	
 	if Input.is_action_pressed("shoot") and can_shoot:
 		var bullet_instance = Bullet.instantiate()
@@ -66,3 +40,29 @@ func _physics_process(delta):
 	
 func _on_reload_timer_timeout():
 	can_shoot = true
+	
+func _flip_the_player(velocity_x, delta):
+	# if the timer is active
+	if flip_seconds < FLIP_DURATION:
+		flip_seconds += delta
+
+		# completed turning, stop the timer
+		if flip_seconds >= FLIP_DURATION:
+			flip_seconds = FLIP_DURATION
+			scale.x = 1
+		else:
+			# flip to the moving direction when passed half of the timer
+			if flip_seconds >= FLIP_DURATION / 2:
+				flip_h = (target_angle == PI)
+			var start_angle = PI if target_angle == 0.0 else 0.0
+			var angle = lerp(start_angle, target_angle, flip_seconds / FLIP_DURATION)
+			scale.x = abs(cos(angle))
+	else:
+		# timer not active and moving right, but facing left
+		if velocity_x > 0 and flip_h:
+			target_angle = 0.0
+			flip_seconds = 0.0
+		# timer not active and moving left, but facing right
+		elif velocity_x < 0 and !flip_h:
+			target_angle = PI
+			flip_seconds = 0.0
