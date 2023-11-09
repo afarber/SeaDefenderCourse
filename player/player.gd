@@ -89,10 +89,12 @@ func process_shooting():
 		reload_timer.start()
 
 func lose_oxygen(delta):
-	Global.oxygen_level -= OXYGEN_DECREASE_SPEED * delta
+	Global.oxygen_level = move_toward(Global.oxygen_level, 0, OXYGEN_DECREASE_SPEED * delta)
 
 func oxygen_refuel(delta):
 	Global.oxygen_level += OXYGEN_INCREASE_SPEED * delta
+	if Global.oxygen_level > 99:
+		state = State.DEFAULT
 
 func movement(delta):
 	global_position += velocity * SPEED * delta
