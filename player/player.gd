@@ -1,22 +1,22 @@
 extends AnimatedSprite2D
-
+ 
 var can_shoot = true
 var velocity = Vector2(0, 0)
-
+ 
 const FLIP_DURATION = 0.5
 var flip_seconds = FLIP_DURATION
 # if player looks left, the target angle is 0
 # if player looks right, the target angle is PI
 var target_angle = 0.0
-
+ 
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
 const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
-
+ 
 @onready var reload_timer = $ReloadTimer
-
+ 
 func _process(delta):
-
+ 
 	velocity.x = Input.get_axis("move_left", "move_right")	
 	velocity.y = Input.get_axis("move_up", "move_down")
 	velocity = velocity.normalized()
@@ -42,11 +42,11 @@ func _on_reload_timer_timeout():
 	can_shoot = true
 	
 func _flip_the_player(velocity_x, delta):
-	# if the timer is active
+	# if the flip animation is active
 	if flip_seconds < FLIP_DURATION:
 		flip_seconds += delta
-
-		# completed turning, stop the timer
+ 
+		# completed flipping, stop the animation
 		if flip_seconds >= FLIP_DURATION:
 			flip_seconds = FLIP_DURATION
 			scale.x = 1
@@ -58,11 +58,11 @@ func _flip_the_player(velocity_x, delta):
 			var angle = lerp(start_angle, target_angle, flip_seconds / FLIP_DURATION)
 			scale.x = abs(cos(angle))
 	else:
-		# timer not active and moving right, but facing left
+		# animation not active and moving right, but facing left
 		if velocity_x > 0 and flip_h:
 			target_angle = 0.0
 			flip_seconds = 0.0
-		# timer not active and moving left, but facing right
+		# animation not active and moving left, but facing right
 		elif velocity_x < 0 and !flip_h:
 			target_angle = PI
 			flip_seconds = 0.0
