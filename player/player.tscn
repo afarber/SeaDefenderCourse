@@ -43,3 +43,9 @@ animations = [{
 sprite_frames = SubResource("SpriteFrames_pvgv2")
 autoplay = "default"
 script = ExtResource("2_7ci2s")
+
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
