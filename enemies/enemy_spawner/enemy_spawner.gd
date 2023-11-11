@@ -5,6 +5,11 @@ const Person = preload("res://person/person.tscn")
 
 @onready var left = $Left
 @onready var right = $Right
+@onready var spawn_enemy_timer = $SpawnEnemyTimer
+@onready var spawn_person_timer = $SpawnPersonTimer
+
+func _ready():
+	GameEvent.connect("pause_enemies", Callable(self, "_pause"))
 
 func _on_spawn_enemy_timer_timeout():
 	var available_spawn_points = range(1, 5)
@@ -29,3 +34,11 @@ func _on_spawn_person_timer_timeout():
 	var person_instance = Person.instantiate()
 	var selected_spawn_point_number = randi_range(1, 4)
 	spawn_instance(person_instance, selected_spawn_point_number)
+
+func _pause(pause):
+	if pause:
+		spawn_enemy_timer.stop()
+		spawn_person_timer.stop()
+	else:
+		spawn_enemy_timer.start()
+		spawn_person_timer.start()
