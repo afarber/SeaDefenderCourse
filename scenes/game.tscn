@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b8d18yv6piqsr"]
+[gd_scene load_steps=21 format=3 uid="uid://b8d18yv6piqsr"]
 
 [ext_resource type="PackedScene" uid="uid://tn70mtfme7b7" path="res://player/player.tscn" id="1_1dh4i"]
 [ext_resource type="Script" path="res://scenes/game/camera.gd" id="1_dfds7"]
@@ -12,6 +12,7 @@
 [ext_resource type="FontFile" uid="uid://88sjx52j2qyh" path="res://user_interface/fonts/font_1.ttf" id="9_1o827"]
 [ext_resource type="FontFile" uid="uid://y8ngc4anv2fy" path="res://user_interface/fonts/font_2.ttf" id="11_v5bm4"]
 [ext_resource type="Script" path="res://user_interface/points-display/points_display.gd" id="12_7pheb"]
+[ext_resource type="Script" path="res://user_interface/game-over/game_over.gd" id="13_s5pww"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5y5rh"]
 size = Vector2(262, 20)
@@ -173,6 +174,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("13_s5pww")
 
 [node name="ColorRect" type="ColorRect" parent="UserInterface/GameOver"]
 layout_mode = 1
@@ -183,18 +185,34 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.145098, 0.141176, 0.266667, 1)
 
-[node name="Label" type="Label" parent="UserInterface/GameOver"]
+[node name="GameOverLabel" type="Label" parent="UserInterface/GameOver"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -9.5
-offset_bottom = 9.5
+offset_top = -23.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("9_1o827")
 text = "Game Over!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentScoreLabel" type="Label" parent="UserInterface/GameOver"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 10.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("9_1o827")
+theme_override_font_sizes/font_size = 8
+text = "Score 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
