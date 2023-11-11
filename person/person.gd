@@ -8,8 +8,15 @@ const SPEED = 25
 
 var points_value = 30
 
+enum State { DEFAULT, PAUSED }
+var state = State.DEFAULT
+
+func _ready():
+	GameEvent.connect("pause_enemies", Callable(self, "_pause"))
+
 func _physics_process(delta):
-	global_position += velocity * SPEED * delta
+	if state == State.DEFAULT:
+		global_position += velocity * SPEED * delta
 
 func _process(delta):
 	if global_position.x > Global.SCREEN_BOUND_MAX_X or global_position.x < Global.SCREEN_BOUND_MIN_X:
@@ -28,3 +35,6 @@ func _on_area_entered(area):
 func flip_direction():
 	velocity = -velocity
 	sprite.flip_h = !sprite.flip_h
+
+func _pause(pause):
+	state = State.PAUSED if pause else State.DEFAULT

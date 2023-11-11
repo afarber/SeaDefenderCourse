@@ -6,3 +6,4 @@ signal update_people_count(saved_people_count)
 signal update_points
 signal camera_follow_player(player_y_position)
 signal game_over
+signal pause_enemies(pause)

@@ -168,6 +168,7 @@ vertical_alignment = 1
 script = ExtResource("12_7pheb")
 
 [node name="GameOver" type="Control" parent="UserInterface"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
