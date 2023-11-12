@@ -1,5 +1,7 @@
 extends Control
 
+const GameOverSound = preload("res://player/game_over.ogg")
+
 @onready var current_score_label = $CurrentScoreLabel
 @onready var high_score_label = $HighScoreLabel
 @onready var game_over_delay_timer = $GameOverDelay
@@ -26,4 +28,5 @@ func _activate_game_over():
 	game_over_delay_timer.start()
 
 func _on_game_over_delay_timeout():
+	SoundManager.play_sound(GameOverSound)
 	visible = true

@@ -4,6 +4,8 @@ const SPEED = 50
 const MOVEMENT_FREQUENCY = 0.15
 const MOVEMENT_AMPLITUDE = 0.5
 
+const DeathSound = preload("res://enemies/shark/shark_death.ogg")
+
 var velocity = Vector2(1, 0)
 var points_value = 25
 
@@ -27,6 +29,7 @@ func _process(delta):
 func _on_area_entered(area):
 	# Hit by a bullet, remove the shark and bullet
 	if area.is_in_group("PlayerBulletGroup"):
+		SoundManager.play_sound(DeathSound)
 		Global.current_points += points_value
 		GameEvent.emit_signal("update_points")
 		# the parent of the area is player_bullet
