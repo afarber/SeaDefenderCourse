@@ -113,26 +113,29 @@ mesh = SubResource("QuadMesh_aitym")
 [node name="PeopleCount" parent="UserInterface" instance=ExtResource("3_gvg47")]
 position = Vector2(8, 10)
 
-[node name="OxygenBar" type="TextureProgressBar" parent="UserInterface"]
-anchors_preset = 7
+[node name="OxygenBar" type="Node2D" parent="UserInterface"]
+position = Vector2(128, 127)
+script = ExtResource("6_58t3o")
+
+[node name="TextureProgress" type="TextureProgressBar" parent="UserInterface/OxygenBar"]
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -22.0
-offset_right = 100.0
-offset_bottom = -13.0
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -4.5
+offset_right = 70.0
+offset_bottom = 4.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 nine_patch_stretch = true
 stretch_margin_left = 4
 stretch_margin_right = 4
 texture_under = ExtResource("4_87wku")
 texture_progress = ExtResource("5_mpudm")
-script = ExtResource("6_58t3o")
 
-[node name="Label" type="Label" parent="UserInterface/OxygenBar"]
+[node name="Label" type="Label" parent="UserInterface/OxygenBar/TextureProgress"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
