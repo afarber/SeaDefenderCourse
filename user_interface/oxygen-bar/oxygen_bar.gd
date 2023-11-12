@@ -1,5 +1,7 @@
 extends Node2D
 
+const AlertSound = preload("res://user_interface/oxygen-bar/oxygen_alert.ogg")
+
 @onready var progress_bar = $TextureProgress
 @onready var flash_timer = $FlashTimer
 
@@ -36,6 +38,7 @@ func _physics_process(delta):
 func alert(scale_value, rotation_value):
 	scale = Vector2(scale_value, scale_value)
 	rotation_degrees = randf_range(-rotation_value, rotation_value)
+	SoundManager.play_sound(AlertSound)
 	modulate = Color(20, 20, 20)
 	flash_timer.start()
 

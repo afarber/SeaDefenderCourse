@@ -14,6 +14,9 @@ const BULLET_OFFSET = 7
 
 const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 const ShootSound = preload("res://player/player_bullet/player_shoot.ogg")
+const DeathSound = preload("res://player/player_death.ogg")
+const OxygenFullSound = preload("res://user_interface/oxygen-bar/full_oxygen_alert.ogg")
+
 
 enum State { DEFAULT, PEOPLE_REFUEL, OXYGEN_REFUEL }
 var state = State.DEFAULT
@@ -111,6 +114,7 @@ func oxygen_refuel(delta):
 	if Global.oxygen_level > 99:
 		state = State.DEFAULT
 		sprite.play("default")
+		SoundManager.play_sound(OxygenFullSound)
 		GameEvent.emit_signal("pause_enemies", false)
 
 func _death_when_oxygen_reaches_zero():
@@ -122,6 +126,7 @@ func _death_when_refueling_while_full():
 		death()
 
 func death():
+	SoundManager.play_sound(DeathSound)
 	GameEvent.emit_signal("game_over")
 	GameEvent.emit_signal("pause_enemies", true)
 

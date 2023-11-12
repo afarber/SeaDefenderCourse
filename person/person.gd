@@ -5,6 +5,8 @@ var velocity = Vector2(1, 0)
 @onready var sprite = $AnimatedSprite2D
 
 const SPEED = 25
+const SaveSound = preload("res://person/saving_person.ogg")
+const DeathSound = preload("res://person/person_death.ogg")
 
 var points_value = 30
 
@@ -24,12 +26,15 @@ func _process(delta):
 
 func _on_area_entered(area):
 	if area.is_in_group("PlayerGroup"):
+		SoundManager.play_sound(SaveSound)
 		Global.saved_people_count += 1
 		GameEvent.emit_signal("update_people_count", Global.saved_people_count)
 		Global.current_points += points_value
 		GameEvent.emit_signal("update_points")
 		queue_free()
 	elif area.is_in_group("PlayerBulletGroup"):
+		SoundManager.play_sound(DeathSound)
+		area.queue_free()
 		queue_free()
 
 func flip_direction():
