@@ -5,6 +5,7 @@ const MOVEMENT_FREQUENCY = 0.15
 const MOVEMENT_AMPLITUDE = 0.5
 
 const DeathSound = preload("res://enemies/shark/shark_death.ogg")
+const ObjectPiece = preload("res://particles/object-piece/object_piece.tscn")
 
 var velocity = Vector2(1, 0)
 var points_value = 25
@@ -32,6 +33,7 @@ func _on_area_entered(area):
 		SoundManager.play_sound(DeathSound)
 		Global.current_points += points_value
 		GameEvent.emit_signal("update_points")
+		instance_death_pieces()
 		# the parent of the area is player_bullet
 		area.queue_free()
 		queue_free()
@@ -42,6 +44,13 @@ func _on_area_entered(area):
 func flip_direction():
 	velocity = -velocity
 	sprite.flip_h = !sprite.flip_h
+
+func instance_death_pieces():
+	for i in range(2):
+		var object_piece_instance = ObjectPiece.instantiate()
+		object_piece_instance.frame = i
+		object_piece_instance.global_position = global_position
+		get_tree().current_scene.add_child(object_piece_instance)
 
 func _pause(pause):
 	state = State.PAUSED if pause else State.DEFAULT
