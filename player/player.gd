@@ -11,12 +11,14 @@ const MAX_Y_POSITION = 205
 const MIN_Y_POSTION = OXYGEN_REFUEL_Y_POSITION
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
+const PIECE_COUNT = 10
 
 const Bullet = preload("res://player/player_bullet/player_bullet.tscn")
 const ShootSound = preload("res://player/player_bullet/player_shoot.ogg")
 const DeathSound = preload("res://player/player_death.ogg")
 const OxygenFullSound = preload("res://user_interface/oxygen-bar/full_oxygen_alert.ogg")
-
+const ObjectPiece = preload("res://particles/object-piece/object_piece.tscn")
+const PieceTexture = preload("res://player/player_pieces.png")
 
 enum State { DEFAULT, PEOPLE_REFUEL, OXYGEN_REFUEL }
 var state = State.DEFAULT
@@ -129,6 +131,17 @@ func death():
 	SoundManager.play_sound(DeathSound)
 	GameEvent.emit_signal("game_over")
 	GameEvent.emit_signal("pause_enemies", true)
+	instance_player_pieces()
+
+func instance_player_pieces():
+	for i in range(PIECE_COUNT):
+		var object_piece_instance = ObjectPiece.instantiate()
+		object_piece_instance.texture = PieceTexture
+		object_piece_instance.hframes = PIECE_COUNT
+		object_piece_instance.frame = i
+		object_piece_instance.global_position = global_position
+		get_tree().current_scene.add_child(object_piece_instance)
+
 
 func movement(delta):
 	global_position += velocity * SPEED * delta

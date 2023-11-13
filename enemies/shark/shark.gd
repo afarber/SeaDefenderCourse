@@ -1,6 +1,7 @@
 extends Area2D
 
 const SPEED = 50
+const PIECE_COUNT = 2
 const MOVEMENT_FREQUENCY = 0.15
 const MOVEMENT_AMPLITUDE = 0.5
 
@@ -46,7 +47,7 @@ func flip_direction():
 	sprite.flip_h = !sprite.flip_h
 
 func instance_death_pieces():
-	for i in range(2):
+	for i in range(PIECE_COUNT):
 		var object_piece_instance = ObjectPiece.instantiate()
 		object_piece_instance.frame = i
 		object_piece_instance.global_position = global_position
