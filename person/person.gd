@@ -7,6 +7,7 @@ var velocity = Vector2(1, 0)
 const SPEED = 25
 const SaveSound = preload("res://person/saving_person.ogg")
 const DeathSound = preload("res://person/person_death.ogg")
+const PointValuePopup = preload("res://user_interface/point-value-popup/point_value_popup.tscn")
 
 var points_value = 30
 
@@ -27,6 +28,7 @@ func _process(delta):
 func _on_area_entered(area):
 	if area.is_in_group("PlayerGroup"):
 		SoundManager.play_sound(SaveSound)
+		instance_point_popup()
 		Global.saved_people_count += 1
 		GameEvent.emit_signal("update_people_count", Global.saved_people_count)
 		Global.current_points += points_value
@@ -40,6 +42,12 @@ func _on_area_entered(area):
 func flip_direction():
 	velocity = -velocity
 	sprite.flip_h = !sprite.flip_h
+
+func instance_point_popup():
+	var point_popup_instance = PointValuePopup.instantiate()
+	point_popup_instance.global_position = global_position
+	point_popup_instance.value = points_value
+	get_tree().current_scene.add_child(point_popup_instance)
 
 func _pause(pause):
 	state = State.PAUSED if pause else State.DEFAULT
