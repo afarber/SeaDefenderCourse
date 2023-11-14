@@ -51,6 +51,7 @@ func flip_direction():
 func instance_point_popup():
 	var point_popup_instance = PointValuePopup.instantiate()
 	point_popup_instance.global_position = global_position
+	point_popup_instance.value = points_value
 	get_tree().current_scene.add_child(point_popup_instance)
 
 func instance_death_pieces():

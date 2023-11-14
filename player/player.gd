@@ -164,7 +164,7 @@ func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL
 	sprite.play("flash")
 	decrease_people_timer.start()
-	_death_when_refueling_while_full()
+	#_death_when_refueling_while_full()
 	GameEvent.emit_signal("pause_enemies", true)
 
 # called by the signal less_people_oxygen_refuel when touching the top area
@@ -173,7 +173,7 @@ func _less_people_oxygen_refuel():
 	sprite.play("flash")
 	# punish the player for refueling oxygen with a not full crew by removing 1 person
 	remove_one_person()
-	_death_when_refueling_while_full()
+	#_death_when_refueling_while_full()
 	GameEvent.emit_signal("pause_enemies", true)
 
 func _on_decrease_people_timer_timeout():
