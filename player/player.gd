@@ -1,6 +1,5 @@
 extends Area2D
 
-const FLIP_DURATION = 0.5
 const OXYGEN_DECREASE_SPEED = 2.5
 const OXYGEN_INCREASE_SPEED = 60
 const OXYGEN_REFUEL_Y_POSITION = 38
@@ -23,10 +22,9 @@ const PieceTexture = preload("res://player/player_pieces.png")
 enum State { DEFAULT, PEOPLE_REFUEL, OXYGEN_REFUEL }
 var state = State.DEFAULT
 
+var is_shooting = false
 var can_shoot = true
 var velocity = Vector2(0, 0)
-var flip_seconds = FLIP_DURATION
-var going_left = false
  
 @onready var sprite = $AnimatedSprite2D
 @onready var reload_timer = $ReloadTimer
@@ -40,7 +38,7 @@ func _ready():
 func _process(delta):
 	if state == State.DEFAULT:
 		process_movement_input()
-		direction_follows_input(velocity.x, delta)
+		direction_follows_input()
 		process_shooting()
 		lose_oxygen(delta)
 		_death_when_oxygen_reaches_zero()
@@ -65,34 +63,11 @@ func process_movement_input():
 	velocity.y = Input.get_axis("move_up", "move_down")
 	velocity = velocity.normalized()
 
-func direction_follows_input(velocity_x, delta):
-	# if the flip animation is active
-	if flip_seconds < FLIP_DURATION:
-		flip_seconds += delta
- 
-		# completed flipping, stop the animation
-		if flip_seconds >= FLIP_DURATION:
-			flip_seconds = FLIP_DURATION
-			scale.x = 1
-		else:
-			# flip to the moving direction when passed half of the timer
-			if flip_seconds >= FLIP_DURATION / 2:
-				sprite.flip_h = going_left
-			# if player looks left, the angle is PI
-			# if player looks right, the angle is 0
-			var start_angle = 0.0 if going_left else PI
-			var target_angle = PI if going_left else 0.0
-			var angle = lerp_angle(start_angle, target_angle, flip_seconds / FLIP_DURATION)
-			scale.x = abs(cos(angle))
-	else:
-		# animation not active and moving right, but facing left
-		if velocity_x > 0 and sprite.flip_h:
-			going_left = false
-			flip_seconds = 0.0
-		# animation not active and moving left, but facing right
-		elif velocity_x < 0 and !sprite.flip_h:
-			going_left = true
-			flip_seconds = 0.0
+func direction_follows_input():
+	if velocity.x > 0:
+		sprite.flip_h = false
+	elif velocity.x < 0:
+		sprite.flip_h = true
 
 func process_shooting():
 	if Input.is_action_pressed("shoot") and can_shoot:
