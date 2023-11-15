@@ -22,7 +22,7 @@ const PieceTexture = preload("res://player/player_pieces.png")
 enum State { DEFAULT, PEOPLE_REFUEL, OXYGEN_REFUEL }
 var state = State.DEFAULT
 
-var is_shooting = false
+# can_shoot is false while reloading
 var can_shoot = true
 var velocity = Vector2(0, 0)
  
@@ -64,16 +64,24 @@ func process_movement_input():
 	velocity = velocity.normalized()
 
 func direction_follows_input():
+	# do not change direction so long as the player holds the shoot button -
+	# to allow the player to move backwards and shoot at the sharks
+	if Input.is_action_pressed("shoot"):
+		return
+
 	if velocity.x > 0:
 		sprite.flip_h = false
 	elif velocity.x < 0:
 		sprite.flip_h = true
 
 func process_shooting():
+	# can_shoot is changed by the reload timer to prevent spamming the shoot key
 	if Input.is_action_pressed("shoot") and can_shoot:
 		var bullet_instance = Bullet.instantiate()
 		get_tree().current_scene.add_child(bullet_instance)
+
 		SoundManager.play_sound(ShootSound)
+
 		if sprite.flip_h:
 			bullet_instance.flip_direction()
 			bullet_instance.global_position = global_position - Vector2(BULLET_OFFSET, 0)
