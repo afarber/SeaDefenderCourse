@@ -120,10 +120,6 @@ func _death_when_oxygen_reaches_zero():
 	if Global.oxygen_level <= 0:
 		death()
 
-func _death_when_refueling_while_full():
-	if Global.oxygen_level > 80:
-		death()
-
 func death():
 	SoundManager.play_sound(DeathSound)
 	GameEvent.emit_signal("game_over")
@@ -138,7 +134,6 @@ func instance_player_pieces():
 		object_piece_instance.frame = i
 		object_piece_instance.global_position = global_position
 		get_tree().current_scene.add_child(object_piece_instance)
-
 
 func movement(delta):
 	global_position += velocity * SPEED * delta
@@ -161,8 +156,8 @@ func _full_crew_oxygen_refuel():
 	state = State.PEOPLE_REFUEL
 	sprite.play("flash")
 	decrease_people_timer.start()
-	#_death_when_refueling_while_full()
 	GameEvent.emit_signal("pause_enemies", true)
+	GameEvent.emit_signal("kill_all_enemies")
 
 # called by the signal less_people_oxygen_refuel when touching the top area
 func _less_people_oxygen_refuel():
@@ -170,7 +165,6 @@ func _less_people_oxygen_refuel():
 	sprite.play("flash")
 	# punish the player for refueling oxygen with a not full crew by removing 1 person
 	remove_one_person()
-	#_death_when_refueling_while_full()
 	GameEvent.emit_signal("pause_enemies", true)
 
 func _on_decrease_people_timer_timeout():

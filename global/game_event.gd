@@ -7,3 +7,4 @@ signal update_points
 signal camera_follow_player(player_y_position)
 signal game_over
 signal pause_enemies(pause)
+signal kill_all_enemies

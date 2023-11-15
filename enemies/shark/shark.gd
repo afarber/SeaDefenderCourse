@@ -19,6 +19,7 @@ var state = State.DEFAULT
 
 func _ready():
 	GameEvent.connect("pause_enemies", Callable(self, "_pause"))
+	GameEvent.connect("kill_all_enemies", Callable(self, "_death"))
 
 func _physics_process(delta):
 	if state == State.DEFAULT:
@@ -32,14 +33,10 @@ func _process(delta):
 func _on_area_entered(area):
 	# Hit by a bullet, remove the shark and bullet
 	if area.is_in_group("PlayerBulletGroup"):
-		SoundManager.play_sound(DeathSound)
-		Global.current_points += points_value
-		GameEvent.emit_signal("update_points")
-		instance_death_pieces()
-		instance_point_popup()
 		# the parent of the area is player_bullet
 		area.queue_free()
-		queue_free()
+		_death()
+
 	# Touched the player, send the game over signal
 	elif area.is_in_group("PlayerGroup"):
 		area.death()
@@ -60,6 +57,14 @@ func instance_death_pieces():
 		object_piece_instance.frame = i
 		object_piece_instance.global_position = global_position
 		get_tree().current_scene.add_child(object_piece_instance)
+
+func _death():
+	SoundManager.play_sound(DeathSound)
+	Global.current_points += points_value
+	GameEvent.emit_signal("update_points")
+	instance_death_pieces()
+	instance_point_popup()
+	queue_free()
 
 func _pause(pause):
 	state = State.PAUSED if pause else State.DEFAULT

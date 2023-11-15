@@ -26,7 +26,7 @@ func _process(delta):
 		queue_free()
 
 func _on_area_entered(area):
-	if area.is_in_group("PlayerGroup"):
+	if area.is_in_group("PlayerGroup") and Global.saved_people_count < 7:
 		SoundManager.play_sound(SaveSound)
 		instance_point_popup()
 		Global.saved_people_count += 1
