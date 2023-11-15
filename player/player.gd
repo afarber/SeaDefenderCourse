@@ -8,6 +8,7 @@ const MAX_X_POSITION = 248
 const MIN_X_POSTION = 13
 const MAX_Y_POSITION = 205
 const MIN_Y_POSTION = OXYGEN_REFUEL_Y_POSITION
+const ROTATION_STRENGTH = 15
 const SPEED = Vector2(125, 90)
 const BULLET_OFFSET = 7
 const PIECE_COUNT = 10
@@ -50,6 +51,7 @@ func _process(delta):
 func _physics_process(delta):
 	if state == State.DEFAULT:
 		movement(delta)
+		rotate_to_movement(delta)
 	else:
 		move_to_shore_line(delta)
 	clamp_position()
@@ -73,6 +75,18 @@ func direction_follows_input():
 		sprite.flip_h = false
 	elif velocity.x < 0:
 		sprite.flip_h = true
+
+func rotate_to_movement(delta):
+	var rotation_target = 0
+	
+	if velocity.y == 0:
+		rotation_target = velocity.x * ROTATION_STRENGTH
+	elif !sprite.flip_h:
+		rotation_target = velocity.y * ROTATION_STRENGTH
+	else:
+		rotation_target = -velocity.y * ROTATION_STRENGTH
+
+	rotation_degrees = lerp(rotation_degrees, rotation_target, 15 * delta)
 
 func process_shooting():
 	# can_shoot is changed by the reload timer to prevent spamming the shoot key
